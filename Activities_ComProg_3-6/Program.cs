@@ -1,37 +1,46 @@
 ﻿using System;
 
-public struct Activity4_Time_StructType{
-    private readonly int totalMins;
-    public Activity4_Time_StructType(int hrs, int mins){
-        totalMins = (hrs * 60) + mins;
+public struct Activity5_TimeProgram
+{
+    private readonly int totalMin; // totalMins from 00:00
+    public Activity5_TimeProgram(int hrs, int mins){
+        totalMin = (hrs * 60) + mins;
     }
-    public int min{
-        get { return totalMins % 60; }  
+    public Activity5_TimeProgram(int minutes){
+        totalMin = minutes;
     }
     public int hr{
-        get {return totalMins / 60;}  
+        get { return totalMin / 60; }
+    } 
+    public int min{
+        get { return totalMin % 60; }
     }
-    public override string ToString(){ 
+    public override string ToString(){ //hh:mm format
         return String.Format("{0:D2}:{1:D2}", hr, min);
+    }
+    public static Activity5_TimeProgram operator +(Activity5_TimeProgram t1, Activity5_TimeProgram t2){ // xTime + operator to add two Time values
+        return new Activity5_TimeProgram(t1.totalMin + t2.totalMin);
+    }
+    public static Activity5_TimeProgram operator -(Activity5_TimeProgram t1, Activity5_TimeProgram t2){ // xTime - operator to add two Time values
+        return new Activity5_TimeProgram(t1.totalMin - t2.totalMin);
     }
 }
 
-    class Program{
-        static void Main(){
-            Activity4_Time_StructType AM_Time = new Activity4_Time_StructType(10, 5); 
-            Activity4_Time_StructType PM_Time = new Activity4_Time_StructType(23, 45); 
-            Activity4_Time_StructType midnightTime = new Activity4_Time_StructType(0, 0);
-            Activity4_Time_StructType customTime = new Activity4_Time_StructType(15, 30);
+        class Activity5_Time
+        {
+            static void Main(){
+                //two time examples
+                Activity5_TimeProgram AM_Time = new Activity5_TimeProgram(11, 11); // 11:11 AM
+                Activity5_TimeProgram extraTime = new Activity5_TimeProgram(10, 03);   // 10 hour 03 minutes
 
-          //view as str
-            Console.WriteLine("Formatted Times:");
-            Console.WriteLine("AM Time: " + AM_Time);
-            Console.WriteLine("PM Time: " + PM_Time);
-            Console.WriteLine("Midnight: " + midnightTime);
-            Console.WriteLine("Custom Time: " + customTime);
+                Activity5_TimeProgram totalTime = AM_Time + extraTime;
+                Activity5_TimeProgram differenceTime = AM_Time - extraTime;
+                Activity5_TimeProgram directTime = new Activity5_TimeProgram(200); // 200 mins since midnight
 
-            Console.WriteLine("\nEvening Time:");
-            Console.WriteLine("Hour: " + PM_Time.hr);
-            Console.WriteLine("Minute: " + PM_Time.min);
+                Console.WriteLine("Morning Time: " + AM_Time);
+                Console.WriteLine("Extra Time: " + extraTime);
+                Console.WriteLine("Added Time (morning + extra): " + totalTime);
+                Console.WriteLine("Difference Time (morning - extra): " + differenceTime);
+                Console.WriteLine("Time from 200 minutes: " + directTime);
+            }
         }
-    }
