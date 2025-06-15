@@ -1,46 +1,46 @@
 ﻿using System;
 
-public struct Activity5_TimeProgram
+// A simple struct to represent time as minutes since midnight
+public struct Activity6_Time
 {
-    private readonly int totalMin; // totalMins from 00:00
-    public Activity5_TimeProgram(int hrs, int mins){
-        totalMin = (hrs * 60) + mins;
+    private readonly int totalMins;
+
+    // Constructor: accepts total minutes since midnight
+    public Activity6_Time(int mins){
+        totalMins = mins;
     }
-    public Activity5_TimeProgram(int minutes){
-        totalMin = minutes;
+    public int min{ 
+        get {return totalMins % 60;}
     }
-    public int hr{
-        get { return totalMin / 60; }
-    } 
-    public int min{
-        get { return totalMin % 60; }
+    public int Hour{
+        get {return totalMins / 60;}
     }
-    public override string ToString(){ //hh:mm format
-        return String.Format("{0:D2}:{1:D2}", hr, min);
+    public override string ToString(){ // hh:mm format
+        return String.Format("{0:D2}:{1:D2}", Hour, min);
     }
-    public static Activity5_TimeProgram operator +(Activity5_TimeProgram t1, Activity5_TimeProgram t2){ // xTime + operator to add two Time values
-        return new Activity5_TimeProgram(t1.totalMin + t2.totalMin);
+    public static implicit operator Activity6_Time(int mins){ // imp conversion: int (mins) to Time
+        return new Activity6_Time(mins);
     }
-    public static Activity5_TimeProgram operator -(Activity5_TimeProgram t1, Activity5_TimeProgram t2){ // xTime - operator to add two Time values
-        return new Activity5_TimeProgram(t1.totalMin - t2.totalMin);
+    public static explicit operator int(Activity6_Time time){ // exp conversion: Time to int (mins)
+        return time.totalMins;
     }
 }
 
-        class Activity5_Time
-        {
-            static void Main(){
-                //two time examples
-                Activity5_TimeProgram AM_Time = new Activity5_TimeProgram(11, 11); // 11:11 AM
-                Activity5_TimeProgram extraTime = new Activity5_TimeProgram(10, 03);   // 10 hour 03 minutes
+class Program
+{
+    static void Main()
+    {
+        Activity6_Time timeFromInt = 135; //ex., imp conversion
+        Console.WriteLine("Time from 135 minutes: " + timeFromInt);
 
-                Activity5_TimeProgram totalTime = AM_Time + extraTime;
-                Activity5_TimeProgram differenceTime = AM_Time - extraTime;
-                Activity5_TimeProgram directTime = new Activity5_TimeProgram(200); // 200 mins since midnight
+        int totalMinutes = (int)timeFromInt; //exp conversion
+        Console.WriteLine("Total minutes from time: " + totalMinutes);
 
-                Console.WriteLine("Morning Time: " + AM_Time);
-                Console.WriteLine("Extra Time: " + extraTime);
-                Console.WriteLine("Added Time (morning + extra): " + totalTime);
-                Console.WriteLine("Difference Time (morning - extra): " + differenceTime);
-                Console.WriteLine("Time from 200 minutes: " + directTime);
-            }
-        }
+        // More practice
+        Activity6_Time startTimeExample = 480; // 8:00 AM (implicit)
+        Console.WriteLine("Starts at: " + startTimeExample);
+
+        int minutesSinceMidnight = (int)startTimeExample; // explicit
+        Console.WriteLine("That’s " + minutesSinceMidnight + " minutes since midnight.");
+    }
+}
